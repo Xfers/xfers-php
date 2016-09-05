@@ -3,7 +3,6 @@
 namespace Xfers\HttpClient;
 
 use Xfers\Error;
-use Xfers\Util;
 
 class CurlClient implements ClientInterface
 {
@@ -103,6 +102,12 @@ class CurlClient implements ClientInterface
         } elseif ($method == 'post') {
             $opts[CURLOPT_POST] = 1;
             $opts[CURLOPT_POSTFIELDS] = $hasFile ? $params : self::encode($params);
+        } elseif ($method == 'put') {
+            $opts[CURLOPT_PUT] = 1;
+            if (count($params) > 0) {
+                $encoded = self::encode($params);
+                $absUrl = "$absUrl?$encoded";
+            }
         } elseif ($method == 'delete') {
             $opts[CURLOPT_CUSTOMREQUEST] = 'DELETE';
             if (count($params) > 0) {
@@ -139,7 +144,6 @@ class CurlClient implements ClientInterface
         // sending an empty `Expect:` header.
         array_push($headers, 'Expect: ');
 
-        $absUrl = Util\Util::utf8($absUrl);
         $opts[CURLOPT_URL] = $absUrl;
         $opts[CURLOPT_RETURNTRANSFER] = true;
         $opts[CURLOPT_CONNECTTIMEOUT] = $this->connectTimeout;

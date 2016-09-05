@@ -43,25 +43,10 @@ Simple usage looks like:
 
 ```php
 \Xfers\Xfers::setApiKey('ENfbme3sus9EjgzXDHoV8W9-MXPj25e4udYst2CGync');
-$resp = \Xfers\Account::retrieve();
-echo $resp;
+$resp = \Xfers\User::retrieve();
+print_r($resp);
 ```
 
 ## Documentation
 
 Please see http://docs.xfers.io/ for up-to-date documentation.
-
-
-## Tests
-
-Install dependencies as mentioned above (which will resolve [PHPUnit](http://packagist.org/packages/phpunit/phpunit)), then you can run the test suite:
-
-```bash
-./vendor/bin/phpunit
-```
-
-Or to run an individual test file:
-
-```bash
-./vendor/bin/phpunit tests/UtilTest.php
-```

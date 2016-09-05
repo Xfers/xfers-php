@@ -11,7 +11,6 @@ interface ClientInterface
      * @param array $params KV pairs for parameters. Can be nested for arrays and hashes
      * @param boolean $hasFile Whether or not $params references a file (via an @ prefix or
      *                         CurlFile)
-     * @throws Error\Api & Error\ApiConnection
      * @return array($rawBody, $httpStatusCode, $httpHeader)
      */
     public function request($method, $absUrl, $headers, $params, $hasFile);

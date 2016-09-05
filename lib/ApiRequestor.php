@@ -24,63 +24,20 @@ class ApiRequestor
         $this->_apiBase = $apiBase;
     }
 
-    private static function _encodeObjects($d)
-    {
-        if ($d instanceof ApiResource) {
-            return Util\Util::utf8($d->id);
-        } elseif ($d === true) {
-            return 'true';
-        } elseif ($d === false) {
-            return 'false';
-        } elseif (is_array($d)) {
-            $res = array();
-            foreach ($d as $k => $v) {
-                $res[$k] = self::_encodeObjects($v);
-            }
-            return $res;
-        } else {
-            return Util\Util::utf8($d);
-        }
-    }
-
-    /**
-     * @param string $method
-     * @param string $url
-     * @param array|null $params
-     * @param array|null $headers
-     *
-     * @return array An array whose first element is an API response and second
-     *    element is the API key used to make the request.
-     */
-    public function request($method, $url, $params = null, $headers = null)
+    public function request($method, $url, $params = null, $connectKey = null)
     {
         if (!$params) {
             $params = array();
         }
-        if (!$headers) {
-            $headers = array();
-        }
 
-        list($rbody, $rcode, $rheaders, $myApiKey) =
-        $this->_requestRaw($method, $url, $params, $headers);
+        $headers = array();
+
+        list($rbody, $rcode, $rheaders) =
+            $this->_requestRaw($method, $url, $params, $headers, $connectKey);
         $json = $this->_interpretResponse($rbody, $rcode, $rheaders);
-        $resp = new ApiResponse($rbody, $rcode, $rheaders, $json);
-        return array($resp, $myApiKey);
+        return new ApiResponse($rbody, $rcode, $rheaders, $json);
     }
 
-    /**
-     * @param string $rbody A JSON string.
-     * @param int $rcode
-     * @param array $rheaders
-     * @param array $resp
-     *
-     * @throws Error\InvalidRequest if the error is caused by the user.
-     * @throws Error\Authentication if the error is caused by a lack of
-     *    permissions.
-     * @throws Error\RateLimit if the error is caused by too many requests
-     *    hitting the API.
-     * @throws Error\Api otherwise.
-     */
     public function handleApiError($rbody, $rcode, $rheaders, $resp)
     {
         if (!is_array($resp) || !isset($resp['error'])) {
@@ -89,34 +46,17 @@ class ApiRequestor
             throw new Error\Api($msg, $rcode, $rbody, $resp, $rheaders);
         }
 
-        $error = $resp['error'];
-        $msg = isset($error['message']) ? $error['message'] : null;
-        $param = isset($error['param']) ? $error['param'] : null;
-        $code = isset($error['code']) ? $error['code'] : null;
+        $msg = $resp['error'];
 
         switch ($rcode) {
             case 400:
-                // 'rate_limit' code is deprecated, but left here for backwards compatibility
-                // for API versions earlier than 2015-09-08
-                if ($code == 'rate_limit') {
-                    throw new Error\RateLimit($msg, $param, $rcode, $rbody, $resp, $rheaders);
-                }
-
-                // intentional fall-through
-            case 404:
-                throw new Error\InvalidRequest($msg, $param, $rcode, $rbody, $resp, $rheaders);
-            case 401:
-                throw new Error\Authentication($msg, $rcode, $rbody, $resp, $rheaders);
-            case 402:
-                throw new Error\Card($msg, $param, $code, $rcode, $rbody, $resp, $rheaders);
-            case 429:
-                throw new Error\RateLimit($msg, $param, $rcode, $rbody, $resp, $rheaders);
+                throw new Error\InvalidRequest($msg, $rcode, $rbody, $resp, $rheaders);
             default:
                 throw new Error\Api($msg, $rcode, $rbody, $resp, $rheaders);
         }
     }
 
-    private function _requestRaw($method, $url, $params, $headers)
+    private function _requestRaw($method, $url, $params, $headers, $connectKey = null)
     {
         $myApiKey = $this->_apiKey;
         if (!$myApiKey) {
@@ -133,9 +73,6 @@ class ApiRequestor
 
         $absUrl = $this->_apiBase.$url;
 
-        echo "THE URL IS $absUrl \n";
-
-        $params = self::_encodeObjects($params);
         $langVersion = phpversion();
         $uname = php_uname();
         $ua = array(
@@ -167,7 +104,11 @@ class ApiRequestor
             $defaultHeaders['Content-Type'] = 'application/x-www-form-urlencoded';
         }
 
-        $defaultHeaders['X-XFERS-USER-API-KEY'] = $myApiKey;
+        if (!empty($connectKey)) {
+            $defaultHeaders['X-XFERS-APP-API-KEY'] = $connectKey;
+        } else {
+            $defaultHeaders['X-XFERS-USER-API-KEY'] = $myApiKey;
+        }
 
         $combinedHeaders = array_merge($defaultHeaders, $headers);
         $rawHeaders = array();
@@ -183,7 +124,7 @@ class ApiRequestor
             $params,
             $hasFile
         );
-        return array($rbody, $rcode, $rheaders, $myApiKey);
+        return array($rbody, $rcode, $rheaders);
     }
 
     private function _processResourceParam($resource, $hasCurlFile)

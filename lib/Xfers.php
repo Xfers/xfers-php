@@ -13,9 +13,13 @@ class Xfers
     public static $apiKey;
 
     // @var string The base URL for the Xfers API.
-    public static $apiBase = 'https://sandbox.xfers.io/api';
+    const SGsandboxBase = 'https://sandbox.xfers.io/api/v3';
+    const SGproductionBase = 'https://www.xfers.io/api/v3';
+    const IDsandboxBase = 'https://sandbox-id.xfers.com/api/v3';
+    const IDproductionBase = 'https://id.xfers.com/api/v3';
 
-    const VERSION = '0.0.1';
+    public static $apiBase = "";
+    const VERSION = '1.0.0';
 
     /**
      * @return string The API key used for requests.
@@ -35,20 +39,23 @@ class Xfers
         self::$apiKey = $apiKey;
     }
 
-    /**
-     * @return string The API version used for requests. null if we're using the
-     *    latest version.
-     */
-    public static function getApiVersion()
+    public static function setSGProduction()
     {
-        return self::$apiVersion;
+        self::$apiBase = self::SGproductionBase;
     }
 
-    /**
-     * @param string $apiVersion The API version to use for requests.
-     */
-    public static function setApiVersion($apiVersion)
+    public static function setSGSandbox()
     {
-        self::$apiVersion = $apiVersion;
+        self::$apiBase = self::SGsandboxBase;
+    }
+
+    public static function setIDProduction()
+    {
+        self::$apiBase = self::IDproductionBase;
+    }
+
+    public static function setIDSandbox()
+    {
+        self::$apiBase = self::IDsandboxBase;
     }
 }

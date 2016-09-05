@@ -1,0 +1,20 @@
+{
+  "name": "xfers/xfers-php",
+  "description": "Xfers PHP Bindings",
+  "type": "library",
+  "require": {
+    "php": ">=5.3.3",
+    "ext-curl": "^0.0.0",
+    "ext-json": "^1.2"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Xfers and contributors",
+      "homepage": "https://github.com/Xfers/xfers-php/contributors"
+    }
+  ],
+  "autoload": {
+    "psr-4": { "Xfers\\" : "lib/" }
+  }
+}
