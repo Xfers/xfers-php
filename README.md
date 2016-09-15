@@ -43,6 +43,7 @@ Simple usage looks like:
 
 ```php
 \Xfers\Xfers::setApiKey('ENfbme3sus9EjgzXDHoV8W9-MXPj25e4udYst2CGync');
+\Xfers\Xfers::setSGSandbox();
 $resp = \Xfers\User::retrieve();
 print_r($resp);
 ```
