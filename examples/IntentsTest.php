@@ -5,7 +5,7 @@ require_once('../init.php');
 \Xfers\Xfers::setApiKey('G-zsfAEScrqdU8GhWTEdjfdnb3XRdU8q1fH-nuWfSzo');
 \Xfers\Xfers::setSGSandbox();
 
-$resp = \Xfers\Intent::listAll();
+$resp = \Xfers\Intent::retrieve();
 print_r($resp);
 
 $intentId = "";

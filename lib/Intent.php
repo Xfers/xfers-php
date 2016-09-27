@@ -6,13 +6,9 @@ class Intent extends ApiResource
 {
     public static $baseUrl = '/intents';
 
-    public static function listAll($params = null, $connectKey = null)
+    public static function retrieve($connectKey = null)
     {
-        $url = self::$baseUrl;
-        if (!empty($params)) {
-            $url = self::$baseUrl . "?" . http_build_query($params);
-        }
-        return self::_get($url, $connectKey);
+        return self::_get(self::$baseUrl, $connectKey);
     }
 
     public static function create($params, $connectKey = null)
