@@ -6,16 +6,18 @@ require_once('../init.php');
 \Xfers\Xfers::setSGSandbox();
 
 $resp = \Xfers\Charge::listAll(array(
-    'customer' => '97288608',
     'limit' => '1'
 ));
+
+print_r($resp);
 
 try {
     $resp = \Xfers\Charge::create(array(
         'amount' => '19.99',
         'currency' => 'SGD',
-        'order_id' => 'A012312',
-        'description' => 'Carousell user - Konsolidate'
+        'order_id' => 'your-custom-order-id',
+        'description' => 'Carousell user - Konsolidate',
+        'redirect' => 'false'
     ));
     print_r($resp);
 } catch (\Xfers\Error\InvalidRequest $e) {

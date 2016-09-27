@@ -23,7 +23,6 @@ class Charge extends ApiResource
 
     public static function create($params, $connectKey = null)
     {
-        $params['redirect'] = 'false';
         return self::_post($params, self::$baseUrl, $connectKey);
     }
 
@@ -38,7 +37,6 @@ class Charge extends ApiResource
         $url = self::$baseUrl . "/" . $transactionId . "/validate";
         return self::_post($params, $url, $connectKey);
     }
-
 
     public static function cancel($chargeId, $connectKey = null)
     {
