@@ -10,6 +10,8 @@ require(dirname(__FILE__) . '/lib/Error/Api.php');
 require(dirname(__FILE__) . '/lib/Error/ApiConnection.php');
 require(dirname(__FILE__) . '/lib/Error/Authentication.php');
 require(dirname(__FILE__) . '/lib/Error/InvalidRequest.php');
+require(dirname(__FILE__) . '/lib/Error/InternalServerError.php');
+
 // Plumbing
 require(dirname(__FILE__) . '/lib/ApiResponse.php');
 require(dirname(__FILE__) . '/lib/ApiRequestor.php');

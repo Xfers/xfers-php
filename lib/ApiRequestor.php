@@ -51,6 +51,10 @@ class ApiRequestor
         switch ($rcode) {
             case 400:
                 throw new Error\InvalidRequest($msg, $rcode, $rbody, $resp, $rheaders);
+            case 401:
+                throw new Error\Authentication($msg, $rcode, $rbody, $resp, $rheaders);
+            case 500:
+                throw new Error\InternalServerError($msg, $rcode, $rbody, $resp, $rheaders);
             default:
                 throw new Error\Api($msg, $rcode, $rbody, $resp, $rheaders);
         }
