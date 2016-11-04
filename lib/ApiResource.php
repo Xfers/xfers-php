@@ -38,9 +38,9 @@ abstract class ApiResource
         return json_decode($response->body, true);
     }
 
-    protected static function _delete($url = null, $connectKey = null)
+    protected static function _delete($url = null, $connectKey = null, $params = null)
     {
-        $response = static::_staticRequest('delete', $url, null, $connectKey);
+        $response = static::_staticRequest('delete', $url, $params, $connectKey);
         return json_decode($response->body, true);
     }
 }

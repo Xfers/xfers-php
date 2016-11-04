@@ -24,3 +24,4 @@ require(dirname(__FILE__) . '/lib/Charge.php');
 require(dirname(__FILE__) . '/lib/Payout.php');
 require(dirname(__FILE__) . '/lib/Connect.php');
 require(dirname(__FILE__) . '/lib/Intent.php');
+require(dirname(__FILE__) . '/lib/Card.php');

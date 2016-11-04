@@ -47,9 +47,21 @@ class Charge extends ApiResource
         return self::_post(null, $url, $connectKey);
     }
 
-    public static function settle($chargeId, $params = null, $connectKey = null)
+    public static function authorize($chargeId, $authCode)
     {
-        $url = self::$baseUrl . "/" . $chargeId;
-        return self::_post($params, $url, $connectKey);
+        if (empty($chargeId)) {
+            throw new Error\InvalidRequest("Charge id cannot be empty", 400);
+        }
+
+        if (empty($authCode)) {
+            throw new Error\InvalidRequest("Auth code cannot be empty", 400);
+        }
+
+        $params = array(
+            'auth_code' => $authCode
+        );
+
+        $url = self::$baseUrl . "/" . $chargeId . "/authorize";
+        return self::_post($params, $url, null);
     }
 }

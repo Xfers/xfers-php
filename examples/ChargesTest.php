@@ -2,7 +2,7 @@
 
 require_once('../init.php');
 
-\Xfers\Xfers::setApiKey('G-zsfAEScrqdU8GhWTEdjfdnb3XRdU8q1fH-nuWfSzo');
+\Xfers\Xfers::setApiKey('WuTp3zM7UEpmUkeAyGPxRHmnXAx-hXJ7jzdqmxY6S1o');
 \Xfers\Xfers::setSGSandbox();
 
 $resp = \Xfers\Charge::listAll(array(
@@ -39,15 +39,16 @@ try {
 }
 
 try {
-    $resp = \Xfers\Charge::settle("qz454bce431a4f387567aa1db59427py");
+    $resp = \Xfers\Charge::refund("19_A012312");
     print_r($resp);
-} catch (\Xfers\Error\Api $e) {
-    echo 'Caught Api exception: ', $e->getMessage(), "\n";
+} catch (\Xfers\Error\InvalidRequest $e) {
+    echo 'Caught InvalidRequest exception: ', $e->getMessage(), "\n";
 }
 
-
 try {
-    $resp = \Xfers\Charge::refund("19_A012312");
+    $chargeId = '782f2a6e1b5642edb10c8b6b215c4814';
+    $authCode = '213779';
+    $resp = \Xfers\Charge::authorize($chargeId, $authCode);
     print_r($resp);
 } catch (\Xfers\Error\InvalidRequest $e) {
     echo 'Caught InvalidRequest exception: ', $e->getMessage(), "\n";
