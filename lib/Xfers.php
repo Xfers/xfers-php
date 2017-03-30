@@ -19,7 +19,7 @@ class Xfers
     const IDproductionBase = 'https://id.xfers.com/api/v3';
 
     public static $apiBase = "";
-    const VERSION = '1.2.0';
+    const VERSION = '1.3.0';
 
     /**
      * @return string The API key used for requests.

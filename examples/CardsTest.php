@@ -1,7 +1,59 @@
 <?php
 
 require_once('../init.php');
+// INDO
+\Xfers\Xfers::setIDSandbox();
 
+try {
+    echo "Charge guest card\n";
+    $chargeId = '670ee7406c424968ac5587852743ebd1'; // you must create a charge first
+    $params = array(
+        'txn_id' => $chargeId,
+        'card_name' => 'Visnu',
+        'card_type' => 'V',
+        'card_no' => '4137180300023783',
+        'card_cvc' => '666',
+        'expiry_month' => '01',
+        'expiry_year' => '2021',
+        'save_card' => true
+    );
+    $resp = \Xfers\Card::chargeGuest($params);
+    print_r($resp);
+} catch (\Xfers\Error\InvalidRequest $e) {
+    echo 'Caught InvalidRequest exception: ', $e->getMessage(), "\n";
+}
+
+try {
+    \Xfers\Xfers::setApiKey('LXcbEXxAZ894yVsSC1-iLpUWFx_RKTgeASsdL5TZhbc');
+    echo "Listing all cards\n";
+    $customer = "hello@xfers.io";
+    $resp = \Xfers\Card::listAll($customer);
+    print_r($resp);
+} catch (\Xfers\Error\InvalidRequest $e) {
+    echo 'Caught InvalidRequest exception: ', $e->getMessage(), "\n";
+}
+
+try {
+    echo "Charge existing card\n";
+    $chargeId = '5d8c605550114d3fbfdeffbf85ba3d69';
+    $token = '2D23113F-307F-41CA-8921-7A977668E3EC';
+    $resp = \Xfers\Card::chargeExisting($chargeId, $token);
+    print_r($resp);
+} catch (\Xfers\Error\InvalidRequest $e) {
+    echo 'Caught InvalidRequest exception: ', $e->getMessage(), "\n";
+}
+
+try {
+    echo "Deleting card\n";
+    $token = '2D23113F-307F-41CA-8921-7A977668E3EC';
+    $resp = \Xfers\Card::delete($token);
+    print_r($resp);
+} catch (\Xfers\Error\InvalidRequest $e) {
+    echo 'Caught InvalidRequest exception: ', $e->getMessage(), "\n";
+}
+
+
+// SINGAPORE
 \Xfers\Xfers::setApiKey('WuTp3zM7UEpmUkeAyGPxRHmnXAx-hXJ7jzdqmxY6S1o');
 \Xfers\Xfers::setSGSandbox();
 

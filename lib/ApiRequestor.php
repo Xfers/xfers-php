@@ -67,14 +67,6 @@ class ApiRequestor
             $myApiKey = Xfers::$apiKey;
         }
 
-        if (!$myApiKey) {
-            $msg = 'No API key provided.  (HINT: set your API key using '
-              . '"Xfers::setApiKey(<API-KEY>)".  You can generate API keys from '
-              . 'the Xfers web interface.  See http://docs.xfers.io/#authentication for '
-              . 'details, or email support@xfers.io if you have any questions.';
-            throw new Error\Authentication($msg);
-        }
-
         $absUrl = $this->_apiBase.$url;
 
         $langVersion = phpversion();
