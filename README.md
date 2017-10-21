@@ -37,6 +37,15 @@ The bindings require the following extension in order to work properly:
 
 If you use Composer, these dependencies should be handled automatically. If you install manually, you'll want to make sure that these extensions are available.
 
+
+You may need to install the following cretificates to use the SDK
+
+- [`ca-certificate`] 
+
+Installed via:
+
+apt-get install ca-certificates
+
 ## Getting Started
 
 Simple usage looks like:
